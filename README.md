@@ -105,7 +105,51 @@ CMD ["python","main.py"]
      f. docker rm container_name
      g. docker stop container_name
      h. docker exec -it container_name psql -u admin -d postgres-db
-     
+10. APACHE AIRFLOW
+  a. docker-compose.yml
+
+  airflow:
+    image:apache/airflow:2.9.0
+    container_name:airflow
+    restart:always
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+    command: >
+      bash -c "airflow db init && airflow users create --username admin --password admin --firstname admin --lastname admin --email admin@example.com --roie Admin && airflow webserver & airflow scheduler
+11, etl-pipeline.py
+  from airflow import DAG
+  from airflow.operators.bash import BashOperator
+  from datetime import datetime
+
+
+  with DAG(
+    dag_id="etl_pipeline"
+    date_time=datetime(2026,4,1),
+    schedule_interval="@daily",
+    catchup=False
+  ) as dag:
+       generate = BashOperator(
+         task_id="generate",
+         bash_command="python generate.py"
+       )
+       extract = BashOperator(
+         task_id="extract",
+         bash_command="python extract.py"
+       )
+       transform = BashOperator(
+         task_id="transform",
+         bash_command="python transform.py"
+       )
+       load = BashOperator(
+         task_id="load",
+         bash_command="python load.py"
+       )
+       generator >> extract >> transform >> load
    
              
 
