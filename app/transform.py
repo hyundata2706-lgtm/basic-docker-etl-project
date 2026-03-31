@@ -5,6 +5,7 @@ def transform_data():
     # drop null values
     df = df.dropna(subset=["user_id","order_date"])
     # change datatiem
+    df["user_id"] = df["user_id"].astype(int)
     df["order_date"] = pd.to_datetime(df["order_date"],errors="coerce")
     df["amount"] = pd.to_numeric(df["amount"],errors="coerce")
     # remove invalid values
