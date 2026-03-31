@@ -2,7 +2,8 @@ import os
 import psycopg2
 import time
 from extract import extract_data
-from transform import transform_data
+from transform import transform_data]
+from load import load_db
 def wait_connection():
   for i in range(5):
     try:
@@ -18,6 +19,8 @@ def wait_connection():
       print("data extracted")
       transform_data()
       print("data transformed")
+      load_db(conn)
+      print("data loaded in docker")
       return conn
     except Exception as e:
       print(f"error when connecting.. {e})
