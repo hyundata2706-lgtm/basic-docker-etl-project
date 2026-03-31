@@ -1,7 +1,8 @@
 import os
 import psycopg2
 import time
-
+from extract import extract_data
+from transform import transform_data
 def wait_connection():
   for i in range(5):
     try:
@@ -13,6 +14,10 @@ def wait_connection():
         port=5432
       )
       print("ETL is running")
+      extract_data()
+      print("data extracted")
+      transform_data()
+      print("data transformed")
       return conn
     except Exception as e:
       print(f"error when connecting.. {e})
