@@ -11,6 +11,9 @@ services:
       POSTGRES_DB: postgres-db
     ports:
       - "5432-5432"
+    volumes:
+      - postgres-data: /var/lib/postgresql/data
+      - ./sql/init.sql: /docker-entryendpoint-initdb.d/init.sql
   etl:
     build: .
     container_name: etl-pipeline
@@ -23,3 +26,5 @@ services:
       - ./app:/app/data
     depends-on:
       postgres
+volumes:
+  postgres-data:
