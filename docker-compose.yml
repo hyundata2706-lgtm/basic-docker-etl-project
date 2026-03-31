@@ -19,5 +19,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: postgres-db
+    volumes:
+      - /app:/app/data
     depends-on:
       postgres
